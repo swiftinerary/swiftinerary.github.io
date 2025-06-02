@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swiftinerary - AI-Powered Travel Itinerary Planning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Travel Theme - Blue/Teal Gradient */
+            --bg-gradient-main: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); /* Sky blue gradient */
+            --text-on-dark-primary: #ffffff;
+            --text-on-dark-secondary: rgba(255, 255, 255, 0.85);
+            --text-on-light-primary: #1f2937;
+            --text-on-light-secondary: #4b5563;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --card-border: rgba(14, 165, 233, 0.2);
+            --hero-highlight-gradient: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+            --hero-highlight-alt-gradient: linear-gradient(135deg, #f97316 0%, #ea580c 100%); /* Orange gradient for contrast */
+            --form-input-bg: rgba(255, 255, 255, 0.9);
+            --form-input-border: rgba(14, 165, 233, 0.4);
+            --form-input-focus-border: #38bdf8;
+            --button-gradient: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+            --button-hover-gradient: linear-gradient(135deg, #7dd3fc 0%, #38bdf8 100%);
+            --footer-bg: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            --footer-text: rgba(255, 255, 255, 0.7);
+            --footer-link: #38bdf8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-image: var(--bg-gradient-main);
+            color: var(--text-on-dark-primary); /* Default text color for dark BG */
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative; /* For pseudo-elements like animated BG */
+        }
+
+        /* Animated Background (Grain - simplified) */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -2; /* Behind particles */
+            background: inherit; /* Inherits body gradient */
+        }
+        body::after { /* Grain effect */
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="g" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="5" cy="5" r="0.5" fill="rgba(0,0,0,0.03)"/></pattern></defs><rect width="100%" height="100%" fill="url(%23g)"/></svg>');
+            animation: grainMove 8s steps(10) infinite;
+        }
+        @keyframes grainMove {
+          0%, 100% { transform: translate(0, 0); }
+          25% { transform: translate(-2px, 2px); }
+          50% { transform: translate(2px, -2px); }
+          75% { transform: translate(2px, 2px); }
+        }
+
+        /* Floating Particles (Simplified) */
+        .particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .particle { position: absolute; background: rgba(255, 255, 255, 0.08); border-radius: 50%; animation: floatParticle 10s ease-in-out infinite alternate; }
+        @keyframes floatParticle {
+            from { transform: translateY(0vh) translateX(0vw) scale(0.5); opacity: 0; }
+            50% { opacity: 1; }
+            to { transform: translateY(-100vh) translateX(calc(var(--x-end) * 1px)) scale(1); opacity: 0; }
+        }
+
+
+        .global-container { max-width: 1000px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+
+        header { padding: 40px 0 30px; text-align: center; animation: slideInDown 0.8s ease-out; }
+        .logo-main-title {
+            font-size: 2.8rem; font-weight: 800;
+            color: var(--text-on-dark-primary);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .hero-section { text-align: center; padding: 40px 0 60px; animation: fadeIn 1.2s ease-out 0.3s both; }
+        .hero-section h1 {
+            font-size: clamp(2.5rem, 6vw, 3.8rem); font-weight: 800;
+            color: var(--text-on-dark-primary);
+            line-height: 1.25;
+            margin-bottom: 20px;
+            text-shadow: 0 3px 15px rgba(0,0,0,0.25);
+        }
+        .hero-section h1 .hero-tagline {
+            font-size: 65%; /* Smaller font size relative to the main H1 */
+            font-weight: 500; /* Lighter font weight than main H1 */
+            color: var(--text-on-dark-secondary); /* Softer white color */
+            display: inline-block; /* Ensures it behaves as a block for spacing if needed */
+            margin-top: 5px; /* Adds a little space above the tagline if needed */
+        }
+
+        .hero-section .highlight { /* For the main orange/yellow highlight */
+            background: var(--hero-highlight-gradient);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; text-fill-color: transparent;
+            display: inline-block;
+        }
+        .hero-section .highlight-alt { /* For "Accelerate Innovation" */
+            background: var(--hero-highlight-alt-gradient); /* Uses the new red/magenta gradient */
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; text-fill-color: transparent;
+            display: inline-block;
+        }
+        .hero-section p.subtitle {
+            font-size: 1.15rem; color: var(--text-on-dark-secondary);
+            max-width: 700px; margin: 0 auto 40px auto; 
+            line-height: 1.75; /* Increased line-height */
+        }
+        .hero-demo-media {
+            max-width: 100%; width: 700px; height: auto; border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            margin: 30px auto 40px; display: block;
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        /* Content Card (for Features, How It Works, etc.) */
+        .content-section-card {
+            background-color: var(--card-bg);
+            color: var(--text-on-light-primary); /* Text on light cards */
+            border-radius: 20px;
+            padding: 40px 35px;
+            margin-bottom: 60px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+        .content-section-card h2 { /* Section titles like "Why Archon AI" */
+            font-size: 2rem; font-weight: 700;
+            color: var(--text-on-light-primary);
+            text-align: center; 
+            margin-bottom: 30px; /* Adjusted margin */
+            padding-bottom: 15px; /* Added padding */
+            border-bottom: 2px solid var(--form-input-focus-border); /* Subtle border using existing theme color */
+        }
+        
+        /* PDF Lead Magnet Card */
+        .pdf-lead-card h2 { font-size: 1.5rem; margin-bottom: 15px;}
+        .pdf-lead-card > p { text-align:center; color: var(--text-on-light-secondary); margin-bottom:25px; }
+        .pdf-lead-icon { font-size: 3rem; text-align: center; margin-bottom: 10px; color: var(--accent-gradient) /* Use accent gradient for icon */ }
+        .three-column-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; text-align: center; }
+        .three-column-grid-item h4 { font-size: 1rem; font-weight: 600; color: var(--text-on-light-primary); margin-bottom: 5px; }
+        .three-column-grid-item p { font-size: 0.9rem; color: var(--text-on-light-secondary); }
+        .pdf-available-banner { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 25px; font-weight: 600; color: #c2410c; } /* Darker orange */
+
+        /* Form Card */
+        .form-card { padding: 35px 40px; animation-delay: 0.4s !important; }
+        .form-card h2.form-title { font-size: 1.4rem; margin-bottom: 8px; text-align:center; color: var(--text-on-light-primary); }
+        .form-card p.form-description { font-size: 0.95rem; margin-bottom: 25px; text-align:center; color: var(--text-on-light-secondary); }
+        
+        .cta-form input[type="email"],
+        .cta-form input[type="text"],
+        .cta-form textarea {
+            width: 100%; padding: 15px 18px; font-size: 1rem;
+            background-color: #fff; /* White inputs */
+            border: 1px solid #cbd5e1; /* Tailwind Gray-300 */
+            border-radius: 8px; color: var(--text-on-light-primary); margin-bottom: 15px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .cta-form textarea { min-height: 100px; resize: vertical; }
+        .cta-form input::placeholder, .cta-form textarea::placeholder { color: #94a3b8; /* Tailwind Gray-400 */}
+        .cta-form input:focus, .cta-form textarea:focus {
+            outline: none; border-color: var(--form-input-focus-border);
+            box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2);
+        }
+        .cta-form button[type="submit"] {
+            width: 100%; padding: 16px 20px; font-size: 1.05rem; font-weight: 600;
+            color: var(--text-on-light-primary); /* Darker text on light button */
+            background-image: var(--button-gradient);
+            border: none; border-radius: 8px; cursor: pointer;
+            transition: background-image 0.3s, transform 0.2s, box-shadow 0.3s;
+            margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 4px 10px rgba(245, 158, 11, 0.2);
+        }
+        .cta-form button[type="submit"]:hover {
+            background-image: var(--button-hover-gradient);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(245, 158, 11, 0.3);
+        }
+        .form-note-privacy { font-size: 0.85rem; text-align: center; margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 5px; color: var(--text-on-light-secondary); }
+        .form-message-area { text-align: center; margin-top: 15px; font-size: 0.9rem; font-weight: 500; min-height: 1.3em; }
+        .form-message-area.success { color: #16a34a; } /* Green */
+        .form-message-area.error { color: #dc2626; } /* Red */
+
+        /* General text styling within content cards */
+        .content-section-card p {
+            line-height: 1.7;
+            margin-bottom: 1.2em; /* Consistent bottom margin for paragraphs */
+            color: var(--text-on-light-secondary); /* Softer text color for general paragraphs */
+        }
+        .content-section-card p:last-child {
+            margin-bottom: 0;
+        }
+        .content-section-card ul {
+            margin-bottom: 1.2em;
+            padding-left: 20px; /* Default padding for lists */
+            list-style-position: outside;
+        }
+        .content-section-card ul li {
+            margin-bottom: 0.5em;
+            color: var(--text-on-light-secondary);
+        }
+
+        /* Problem Section - Item Cards */
+        .problem-item-card {
+            background-color: #f9fafb; /* Light background like competitive-edge items */
+            border: 1px solid #e5e7eb; /* Matching border */
+            border-radius: 8px; /* Slightly less rounded than main cards */
+            padding: 15px 20px; /* Comfortable padding */
+            text-align: left; /* Ensure text is left-aligned */
+        }
+        .problem-item-card p {
+            font-size: 0.95rem; /* Consistent font size */
+            line-height: 1.6;
+            color: var(--text-on-light-secondary); /* Softer text color */
+            margin-bottom: 0; /* No bottom margin for the p inside this card */
+        }
+
+        /* Features Section (used in Solution & Competitive Edge) */
+        .feature-item {
+            background-color: #fff; /* Lighter background for feature cards */
+            border: 1px solid #e2e8f0; /* Tailwind Gray-200 */
+            border-radius: 12px; padding: 25px; margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .feature-item:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+        .feature-item .icon {
+            font-size: 1.8rem; margin-bottom: 15px; display: inline-flex; align-items:center; justify-content:center;
+            width: 50px; height: 50px; border-radius: 50%;
+            background-image: var(--button-gradient); color: #fff; /* White icon on gradient */
+        }
+        .feature-item h3 { /* General for feature item titles */
+             font-size: 1.2rem; font-weight: 600; 
+             color: var(--text-on-light-primary); 
+             margin-bottom: 8px; 
+        }
+        .feature-item p { /* General for feature item paragraphs */
+            font-size: 0.95rem; 
+            color: var(--text-on-light-secondary); 
+            line-height: 1.6; 
+        }
+
+        /* Solution Section Specifics */
+        .solution-section .feature-item h3 {
+            font-size: 1.25rem; /* Adjusted from 1.3rem to be slightly less than general card h2 */
+            font-weight: 700; /* Bolder for these specific titles */
+            margin-bottom: 12px;
+            color: var(--text-on-light-primary);
+        }
+        .solution-section .feature-item ul {
+            font-size: 0.9rem;
+            color: var(--text-on-light-secondary);
+            padding-left: 20px; /* Ensure padding for list items */
+            list-style-type: disc; 
+            margin-top: 8px; 
+            margin-bottom: 0; /* Remove bottom margin from ul itself if p handles spacing */
+        }
+        .solution-section .feature-item ul li {
+            margin-bottom: 6px; 
+            line-height: 1.5;
+        }
+
+        /* Competitive Edge Section Specifics */
+        .competitive-edge-section .feature-item {
+            padding: 20px;
+            text-align: left;
+            background-color: #f9fafb; /* Light background for distinct cards */
+            border: 1px solid #e5e7eb;
+            margin-bottom: 20px; /* Ensure spacing between these items */
+        }
+         .competitive-edge-section .feature-item:last-child {
+            margin-bottom: 0;
+        }
+        .competitive-edge-section .feature-item h4 {
+            font-size: 1.1rem; 
+            font-weight: 700;
+            color: var(--text-on-light-primary);
+            margin-bottom: 8px;
+        }
+        .competitive-edge-section .feature-item p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-on-light-secondary);
+            margin-bottom: 0; /* Paragraphs in these items don't need extra bottom margin */
+        }
+
+        /* How It Works Section */
+        .steps-grid { display: flex; flex-direction: column; gap: 35px; align-items: center; }
+        .step-item { text-align: center; max-width: 450px; }
+        .step-item .step-number {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px; border-radius: 50%;
+            background-image: var(--button-gradient); color: var(--text-on-light-primary);
+            font-weight: 600; font-size: 1.1rem; margin-bottom: 15px;
+        }
+        .step-item h3 { font-size: 1.2rem; font-weight: 600; color: var(--text-on-light-primary); margin-bottom: 8px; }
+        .step-item p { font-size: 0.95rem; color: var(--text-on-light-secondary); }
+
+        /* Final CTA */
+        .final-cta-card { text-align: center; }
+        .final-cta-card h2 { font-size: 1.8rem; font-weight: 600; margin-bottom: 15px; color: var(--text-on-light-primary); }
+        .schedule-demo-button {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 14px 28px; font-size: 1rem; font-weight: 600;
+            color: var(--text-on-light-primary); background-image: var(--button-gradient);
+            border: none; border-radius: 8px; cursor: pointer; text-decoration: none;
+            transition: background-image 0.3s, transform 0.2s, box-shadow 0.3s;
+            box-shadow: 0 4px 10px rgba(245, 158, 11, 0.2);
+        }
+        .schedule-demo-button:hover { background-image: var(--button-hover-gradient); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(245, 158, 11, 0.3);}
+
+        /* Footer */
+        footer {
+            background-image: var(--dark-gradient);
+            color: var(--footer-text);
+            text-align: center; padding: 50px 20px; margin-top: 80px;
+            border-top: 3px solid var(--accent-gradient); /* Accent top border */
+        }
+        footer a { color: var(--footer-link); text-decoration: none; }
+        footer a:hover { text-decoration: underline; color: #fde68a; }
+
+        .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid rgba(0,0,0,0.2); border-radius: 50%; border-top-color: var(--text-on-light-primary); animation: spin 1s linear infinite; margin-right: 8px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Animations - Keep simple for broad compatibility */
+        @keyframes slideInDown { from { opacity:0; transform: translateY(-30px); } to { opacity:1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity:0; transform: translateY(30px); } to { opacity:1; transform: translateY(0); } }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-section h1 { font-size: 2rem; }
+            .hero-section p.subtitle { font-size: 1rem; }
+            .logo-main-title { font-size: 2.2rem; }
+            .content-section-card h2, .final-cta-card h2 { font-size: 1.6rem; }
+            .feature-item h3, .step-item h3 { font-size: 1.1rem; }
+            .three-column-grid { grid-template-columns: 1fr; gap: 15px;}
+            .content-section-card, .form-card { padding: 30px 20px;}
+        }
+
+    </style>
+</head>
+<body>
+    <div class="animated-bg"></div>
+    <div class="particles" id="particles-js"></div> <!-- ID for JS particle hook -->
+
+    <div class="global-container">
+        <header>
+            <div class="logo-main-title">Swiftinerary</div>
+        </header>
+
+        <main>
+            <section class="hero-section">
+                <h1>Plan Your Perfect Trip in Seconds.<br><span class="hero-tagline">Effortlessly.</span></h1>
+                <p class="subtitle">Swiftinerary uses cutting-edge AI to craft deeply personalized, optimized travel itineraries that fit your life, not the other way around. Say goodbye to hours of research and hello to seamless adventures.</p>
+                <!-- Replace with your actual demo visual -->
+                <img src="swiftinerary-demo.gif" alt="Swiftinerary Demo - AI Travel Planning" class="hero-demo-media">
+                <a href="#waitlistForm" class="schedule-demo-button" style="margin-top: 20px; margin-bottom: 20px; padding: 15px 30px; font-size: 1.1rem;">
+                    Join Waitlist & Get Early Access
+                </a>
+                <p style="font-size: 0.9rem; color: var(--text-on-dark-secondary); margin-top: 10px;">Be the first to experience AI-powered travel planning.</p>
+            </section>
+
+            <section class="content-section-card the-problem-section">
+                <h2>Tired of Travel Planning Headaches?</h2>
+                <p style="text-align:center; max-width: 700px; margin: 0 auto 20px auto;">
+                    Travel planning is broken. Most travelers waste countless hours struggling with these common challenges:
+                </p>
+                <div class="problem-items-container" style="max-width: 550px; margin: 0 auto 20px auto; display: flex; flex-direction: column; gap: 15px;">
+                    <div class="problem-item-card"><p>Hours lost in endless research and planning</p></div>
+                    <div class="problem-item-card"><p>Optimization nightmares trying to fit everything in</p></div>
+                    <div class="problem-item-card"><p>Generic advice that doesn't match your interests</p></div>
+                    <div class="problem-item-card"><p>Calendar chaos with scattered bookings and notes</p></div>
+                </div>
+                <p style="text-align:center; max-width: 700px; margin: 20px auto 30px auto;">
+                    You're not alone. We're here to change that.
+                </p>
+            </section>
+
+            <section class="content-section-card solution-section">
+                <h2>Introducing Swiftinerary: Intelligent Itineraries, Effortlessly</h2>
+                <p style="text-align:center; max-width: 700px; margin: 0 auto 40px auto;">Swiftinerary is your AI-powered travel co-pilot. Simply tell us your destination, dates, fixed appointments, and interests. Our intelligent engine instantly crafts a dynamic, day-by-day itinerary, optimizing your routes and making the most of your time.</p>
+                <div class="feature-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;">
+                    <div class="feature-item">
+                        <div class="icon">⚡️</div>
+                        <h3>Instant Itineraries</h3>
+                        <ul style="font-size: 0.9rem; color: var(--text-on-light-secondary); padding-left: 20px; text-align: left;">
+                            <li>Get a complete travel plan in seconds, not hours</li>
+                            <li>Smart scheduling that respects opening hours and travel times</li>
+                            <li>Efficient routes with no backtracking</li>
+                        </ul>
+                    </div>
+                    <div class="feature-item">
+                        <div class="icon">🎯</div>
+                        <h3>Deep Personalization</h3>
+                        <ul style="font-size: 0.9rem; color: var(--text-on-light-secondary); padding-left: 20px; text-align: left;">
+                            <li>Tailored to your unique interests and preferences</li>
+                            <li>Adapts to your preferred pace and style</li>
+                            <li>Considers your dietary restrictions and accessibility needs</li>
+                        </ul>
+                    </div>
+                    <div class="feature-item">
+                        <div class="icon">📅</div>
+                        <h3>Smart Calendar Integration</h3>
+                        <ul style="font-size: 0.9rem; color: var(--text-on-light-secondary); padding-left: 20px; text-align: left;">
+                            <li>Works around your existing commitments</li>
+                            <li>Seamlessly incorporates flights and meetings</li>
+                            <li>Flexible planning that adapts to your schedule</li>
+                        </ul>
+                    </div>
+                    <div class="feature-item">
+                        <div class="icon">🔄</div>
+                        <h3>Dynamic Re-planning</h3>
+                        <ul style="font-size: 0.9rem; color: var(--text-on-light-secondary); padding-left: 20px; text-align: left;">
+                            <li>Adapts to weather changes and unexpected events</li>
+                            <li>Real-time updates for closures and delays</li>
+                            <li>Smart alternatives when plans need to change</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section-card competitive-edge-section">
+                <h2>Perfect for Every Traveler</h2>
+                <div style="max-width: 700px; margin: 0 auto;">
+                    <p style="text-align:center; margin-bottom: 30px;">Whether you're a busy professional, avid explorer, family planner, or solo adventurer, Swiftinerary adapts to your unique travel style.</p>
+                    <div class="feature-item" style="margin-bottom: 20px; text-align:left;">
+                        <h4 style="font-weight: 600; margin-bottom:5px;">Busy Professionals</h4>
+                        <p style="font-size: 0.95rem; color: var(--text-on-light-secondary);">Maximize your vacation time or plan efficient "bleisure" trips around work commitments.</p>
+                    </div>
+                    <div class="feature-item" style="margin-bottom: 20px; text-align:left;">
+                        <h4 style="font-weight: 600; margin-bottom:5px;">Avid Explorers</h4>
+                        <p style="font-size: 0.95rem; color: var(--text-on-light-secondary);">Discover unique experiences and optimized routes without endless research.</p>
+                    </div>
+                    <div class="feature-item" style="margin-bottom: 20px; text-align:left;">
+                        <h4 style="font-weight: 600; margin-bottom:5px;">Families</h4>
+                        <p style="font-size: 0.95rem; color: var(--text-on-light-secondary);">Get structured yet flexible plans that cater to everyone's interests and needs.</p>
+                    </div>
+                    <div class="feature-item" style="text-align:left;">
+                        <h4 style="font-weight: 600; margin-bottom:5px;">Solo Adventurers</h4>
+                        <p style="font-size: 0.95rem; color: var(--text-on-light-secondary);">Curated experiences and efficient discovery for your independent journeys.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section-card form-card" id="waitlistForm">
+                <h2 class="form-title">Ready to Revolutionize Your Travel Planning?</h2>
+                <p class="form-description">Join our waitlist to be among the first to experience AI-powered travel planning.</p>
+                <form id="waitlistForm" action="https://formsubmit.co/hello@swiftinerary.com" method="POST" class="cta-form">
+                    <input type="hidden" name="_subject" value="Swiftinerary: Waitlist Signup">
+                    <input type="hidden" name="_replyto" id="formReplyTo">
+                    <input type="hidden" name="_next" value="https://swiftinerary.github.io/thank-you.html">
+                    <input type="hidden" name="source" value="Swiftinerary Landing Page - Waitlist">
+
+                    <input type="text" id="formFirstName" name="firstName" placeholder="First Name (Optional)">
+                    <input type="text" id="formLastName" name="lastName" placeholder="Last Name (Optional)">
+                    <input type="email" id="formEmail" name="email" placeholder="Your Email Address" required>
+                    <input type="text" id="formTravelStyle" name="travelStyle" placeholder="What type of traveler are you? (Optional)">
+                    <textarea id="formTravelGoals" name="travelGoals" placeholder="What are your biggest travel planning challenges? (Optional)" rows="4"></textarea>
+                    <button type="submit" id="formSubmitButton">
+                        <span class="button-text-span">Join Waitlist & Get Early Access</span>
+                        <span class="spinner-span" style="display: none;"><div class="spinner"></div></span>
+                    </button>
+                </form>
+                <div id="formMessage" class="form-message-area"></div>
+                <p class="form-note-privacy" style="margin-top: 25px;">
+                    <span class="icon-placeholder">🔒</span> We respect your privacy. Your information will only be used for waitlist updates and product insights.
+                </p>
+            </section>
+
+            <section class="content-section-card about-section">
+                <h2>Built by AI Experts Passionate About Travel</h2>
+                <div style="max-width: 700px; margin: 0 auto; text-align: center;">
+                    <p style="margin-bottom: 20px;">Swiftinerary is founded by Tiberiu Popa (Airbnb, ex-Facebook ML) and Xin Gao (ex-AWS AI, Amazon Alexa, PhD CS), bringing deep expertise in AI and large-scale systems to solve your biggest travel planning challenges.</p>
+                    <p style="font-size: 0.9rem; color: var(--text-on-light-secondary);">Try our demo: <a href="https://huggingface.co/spaces/XinGaoNJIT/Swiftinerary" target="_blank" style="color: var(--button-gradient);">https://huggingface.co/spaces/XinGaoNJIT/Swiftinerary</a></p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Swiftinerary. All rights reserved.</p>
+        <p><a href="mailto:hello@swiftinerary.com">hello@swiftinerary.com</a></p>
+        <p style="margin-top: 10px; font-size: 0.9rem;">
+            <a href="/privacy" style="margin-right: 15px;">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Floating Particles Script (simplified for brevity, use the one from index (2).html if preferred)
+            const particlesContainer = document.getElementById('particles-js');
+            if (particlesContainer) {
+                for (let i = 0; i < 25; i++) { // Reduced particle count
+                    let particle = document.createElement('div');
+                    particle.className = 'particle';
+                    Object.assign(particle.style, {
+                        width: `${Math.random() * 3 + 1}px`,
+                        height: particle.style.width,
+                        left: `${Math.random() * 100}%`,
+                        top: `${Math.random() * 100}%`,
+                        animationDelay: `${Math.random() * 10}s`,
+                        animationDuration: `${Math.random() * 10 + 10}s`,
+                        setProperty: function(prop, val) { this[prop] = val; } // for older browser compatibility if needed
+                    });
+                    // Set a random end X position for the floatParticle animation
+                    particle.style.setProperty('--x-end', Math.random() * 200 - 100); // Random between -100 and 100
+                    particlesContainer.appendChild(particle);
+                }
+            }
+
+            const form = document.getElementById('waitlistForm');
+            const emailInput = document.getElementById('formEmail');
+            const firstNameInput = document.getElementById('formFirstName');
+            const lastNameInput = document.getElementById('formLastName');
+            const travelStyleInput = document.getElementById('formTravelStyle');
+            const travelGoalsInput = document.getElementById('formTravelGoals');
+            const replyToInput = document.getElementById('formReplyTo');
+            const formMessage = document.getElementById('formMessage');
+            const submitButton = document.getElementById('formSubmitButton');
+            const buttonTextSpan = submitButton.querySelector('.button-text-span');
+            const spinnerSpan = submitButton.querySelector('.spinner-span');
+
+            if (form) {
+                form.addEventListener('submit', function(event) {
+                    const email = emailInput.value.trim();
+                    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                    if (!email || !emailPattern.test(email)) {
+                        event.preventDefault(); 
+                        formMessage.textContent = 'Please enter a valid email address.';
+                        formMessage.className = 'form-message-area error';
+                        return;
+                    }
+                    
+                    if(replyToInput) { 
+                        replyToInput.value = email;
+                    }
+
+                    // Add first name and last name to hidden fields if they exist in form for FormSubmit
+                    // FormSubmit automatically picks up all named fields.
+                    // Or, if sending via JS fetch, include them in the formData.
+
+                    if (buttonTextSpan && spinnerSpan) {
+                        buttonTextSpan.style.display = 'none';
+                        spinnerSpan.style.display = 'inline-flex';
+                    }
+                    submitButton.disabled = true;
+                    formMessage.textContent = 'Submitting...';
+                    formMessage.className = 'form-message-area'; 
+                });
+            }
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('formsubmit_success') || (urlParams.has('message') && urlParams.get('message').toLowerCase().includes('email'))) {
+                 if(formMessage && !document.getElementById('waitlistForm')) { 
+                    const successDiv = document.createElement('div');
+                    successDiv.className = 'form-message-area success'; 
+                    successDiv.textContent = '🎉 Thank you! Your request has been received. The PDF is on its way!';
+                    const mainContent = document.querySelector('main') || document.body;
+                    mainContent.insertBefore(successDiv, mainContent.firstChild);
+                 } else if (formMessage) { 
+                    formMessage.textContent = '🎉 Thank you! Your request has been received. The PDF is on its way!';
+                    formMessage.className = 'form-message-area success';
+                    if(form) form.reset(); 
+                 }
+            }
+
+            const bookDemoButton = document.getElementById('bookDemoButton');
+            if (bookDemoButton) {
+                bookDemoButton.addEventListener('click', function(e) {
+                    e.preventDefault(); 
+                    const subject = encodeURIComponent("Demo Request - Archon AI");
+                    const body = encodeURIComponent(
+`Hi Archon AI Team,
+
+I'm interested in booking a demo for Archon AI.
+My company/school is: [Please fill in]
+The main challenges we face with our codebase (especially ML systems) are: [Optional: Briefly mention]
+Preferred time slots for a demo (please provide a few options in your timezone):
+
+Thanks,
+[Your Name]
+[Your Title/Role (Optional)]`
+                    );
+                    window.location.href = `mailto:archon.ai.work@gmail.com?subject=${subject}&body=${body}`;
+                });
+            }
+
+            // Basic Intersection Observer for entrance animations
+            const animatedElements = document.querySelectorAll('.hero-section, .content-section-card, .feature-item, .step-item, .final-cta-card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running'; // Assumes animations are defined in CSS and initially paused or set to 'both' for fill-mode
+                        // observer.unobserve(entry.target); // Optional: stop observing after first animation
+                    }
+                });
+            }, { threshold: 0.1 }); // Trigger when 10% of element is visible
+
+            animatedElements.forEach(el => {
+                // Ensure animations are defined in CSS (e.g., @keyframes slideInDown/fadeInUp)
+                // And that relevant classes like .animate-slideInDown are applied.
+                // For this example, I'm assuming the @keyframes are directly in the style tag.
+                // The provided index (2).html has @keyframes slideDown, fadeInUp.
+                // For simplicity, let's assume a generic 'fadeInUp' is desired on scroll.
+                // You would need to add @keyframes fadeInUp { from{opacity:0; transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
+                // and apply a class like '.animate-on-scroll' with animation-name: fadeInUp; animation-fill-mode: both; animation-duration: 0.8s; animation-play-state: paused;
+                // to these elements.
+                 observer.observe(el);
+            });
+
+        });
+    </script>
+</body>
+</html>
