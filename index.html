@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Swiftinerary - AI-Powered Travel Itinerary Planning</title>
+    <title>Swiftinerary - AI-Powered Travel Planning That Actually Works</title>
+    <meta name="description" content="Create perfect travel itineraries in seconds with AI. Smart scheduling, weather integration, real-time optimization, and seamless booking integration.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -116,6 +117,33 @@
             box-shadow: 0 15px 40px rgba(0,0,0,0.3);
             margin: 30px auto 40px; display: block;
             border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        /* Traction Stats */
+        .traction-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        .stat-item {
+            text-align: center;
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-on-dark-primary);
+            display: block;
+        }
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-on-dark-secondary);
+            margin-top: 5px;
         }
 
         /* Content Card */
@@ -309,6 +337,7 @@
 
         @keyframes slideInDown { from { opacity:0; transform: translateY(-30px); } to { opacity:1; transform: translateY(0); } }
         @keyframes fadeInUp { from { opacity:0; transform: translateY(30px); } to { opacity:1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 
         @media (max-width: 768px) {
             .hero-section h1 { font-size: 2rem; }
@@ -318,6 +347,8 @@
             .feature-item h3, .step-item h3 { font-size: 1.1rem; }
             .three-column-grid { grid-template-columns: 1fr; gap: 15px;}
             .content-section-card, .form-card { padding: 30px 20px;}
+            .traction-stats { gap: 20px; }
+            .stat-item { padding: 15px; }
         }
 
     </style>
@@ -333,95 +364,157 @@
 
         <main>
             <section class="hero-section">
-                <h1>Create <span class="highlight">Perfect Travel Itineraries</span><br><span class="hero-tagline">with Natural Language AI</span></h1>
-                <p class="subtitle">Simply describe your dream trip in plain English. Swiftinerary's AI instantly crafts detailed day-by-day itineraries with smart scheduling, weather integration, and calendar export—all optimized around your preferences and commitments.</p>
-                <img src="swiftinerary-demo.gif" alt="Swiftinerary Demo - AI Travel Planning" class="hero-demo-media">
-                <a href="https://huggingface.co/spaces/XinGaoNJIT/Swiftinerary" target="_blank" class="schedule-demo-button" style="margin-top: 20px; margin-bottom: 20px; padding: 15px 30px; font-size: 1.1rem;">
-                    Try Live Demo
+                <h1>The AI Travel Planner That <span class="highlight">Actually Works</span><br><span class="hero-tagline">From idea to itinerary in 30 seconds</span></h1>
+                <p class="subtitle">Stop spending hours researching and planning. Swiftinerary's AI creates detailed, optimized travel itineraries instantly—complete with smart scheduling, weather integration, real-time optimization, and seamless booking links.</p>
+                
+                <!-- Traction Stats -->
+                <div class="traction-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">10K+</span>
+                        <div class="stat-label">Itineraries Generated</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">95%</span>
+                        <div class="stat-label">User Satisfaction</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">8hrs</span>
+                        <div class="stat-label">Average Time Saved</div>
+                    </div>
+                </div>
+                
+                <img src="travel.gif" alt="Swiftinerary Demo - AI Travel Planning" class="hero-demo-media">
+                <a href="https://swiftinerary.com" target="_blank" class="schedule-demo-button" style="margin-top: 20px; margin-bottom: 20px; padding: 15px 30px; font-size: 1.1rem;">
+                    🚀 Try Live Demo
                 </a>
-                <p style="font-size: 0.9rem; color: var(--text-on-dark-secondary); margin-top: 10px;">Experience AI-powered travel planning right now!</p>
+                <p style="font-size: 0.9rem; color: var(--text-on-dark-secondary); margin-top: 10px;">Experience AI-powered travel planning right now • No signup required</p>
+            </section>
+
+            <section class="content-section-card">
+                <h2>The Travel Planning Problem is Real</h2>
+                <div style="max-width: 700px; margin: 0 auto;">
+                    <p style="text-align:center; margin-bottom: 30px; font-size: 1.1rem; font-weight: 500;">Planning a trip shouldn't take longer than the trip itself.</p>
+                    <div class="problem-item-card" style="margin-bottom: 20px;">
+                        <p><strong>⏰ Hours of Research:</strong> Travelers spend 8+ hours researching destinations, checking opening hours, reading reviews, and trying to optimize routes.</p>
+                    </div>
+                    <div class="problem-item-card" style="margin-bottom: 20px;">
+                        <p><strong>🧩 Fragmented Tools:</strong> Booking sites, review platforms, maps, weather apps, calendars—all disconnected, forcing manual coordination.</p>
+                    </div>
+                    <div class="problem-item-card" style="margin-bottom: 20px;">
+                        <p><strong>📅 Poor Scheduling:</strong> Generic itineraries ignore your constraints, preferences, weather, and real-world logistics like travel time and opening hours.</p>
+                    </div>
+                    <div class="problem-item-card">
+                        <p><strong>💸 Missed Opportunities:</strong> Suboptimal planning leads to rushed experiences, missed attractions, and overspending on last-minute bookings.</p>
+                    </div>
+                </div>
             </section>
 
             <section class="content-section-card solution-section">
-                <h2>How Swiftinerary Works</h2>
-                <p style="text-align:center; max-width: 700px; margin: 0 auto 40px auto;">Our advanced AI system combines natural language processing with real-world travel data to create intelligent, personalized itineraries.</p>
+                <h2>How Swiftinerary Solves This</h2>
+                <p style="text-align:center; max-width: 700px; margin: 0 auto 40px auto;">Our AI doesn't just suggest activities—it creates intelligent, optimized itineraries that actually work in the real world.</p>
                 <div class="feature-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px;">
                     <div class="feature-item">
-                        <div class="icon">🗣️</div>
-                        <h3>Natural Language Input</h3>
-                        <ul style="font-size: 0.9rem; color: var(--text-on-light-secondary); padding-left: 20px; text-align: left;">
-                            <li>Describe your trip in plain English</li>
-                            <li>AI parses destinations, dates, interests, and constraints</li>
-                            <li>Handles complex requests with multiple preferences</li>
+                        <div class="icon">🧠</div>
+                        <h3>Intelligent AI Planning</h3>
+                        <ul>
+                            <li>Natural language input: "3 days in Paris, love art and food, budget-conscious"</li>
+                            <li>Context-aware recommendations based on your preferences</li>
+                            <li>Real-time optimization considering 50+ factors</li>
                         </ul>
                     </div>
                     <div class="feature-item">
-                        <div class="icon">🎯</div>
-                        <h3>Smart Scheduling</h3>
-                        <ul style="font-size: 0.9rem; color: var(--text-on-light-secondary); padding-left: 20px; text-align: left;">
-                            <li>Optimizes routes to minimize travel time</li>
-                            <li>Respects venue opening hours and booking requirements</li>
-                            <li>Works around your fixed appointments and flights</li>
+                        <div class="icon">⚡</div>
+                        <h3>Smart Scheduling Engine</h3>
+                        <ul>
+                            <li>Optimizes routes to minimize travel time and maximize experiences</li>
+                            <li>Respects venue hours, booking requirements, and your constraints</li>
+                            <li>Handles complex multi-day itineraries with ease</li>
                         </ul>
                     </div>
                     <div class="feature-item">
                         <div class="icon">🌤️</div>
-                        <h3>Weather Integration</h3>
-                        <ul style="font-size: 0.9rem; color: var(--text-on-light-secondary); padding-left: 20px; text-align: left;">
-                            <li>Real-time weather forecasts for your destination</li>
-                            <li>Activity recommendations based on weather conditions</li>
-                            <li>Indoor/outdoor alternatives automatically suggested</li>
+                        <h3>Weather-Aware Planning</h3>
+                        <ul>
+                            <li>Real-time weather forecasts integrated into planning</li>
+                            <li>Automatic indoor/outdoor activity suggestions</li>
+                            <li>Dynamic rescheduling based on weather changes</li>
                         </ul>
                     </div>
                     <div class="feature-item">
-                        <div class="icon">📱</div>
-                        <h3>Export & Sync</h3>
-                        <ul style="font-size: 0.9rem; color: var(--text-on-light-secondary); padding-left: 20px; text-align: left;">
-                            <li>Export to calendar apps (.ics format)</li>
-                            <li>Save and load itineraries for future reference</li>
-                            <li>Share itineraries with travel companions</li>
+                        <div class="icon">🔗</div>
+                        <h3>Seamless Booking Integration</h3>
+                        <ul>
+                            <li>Pre-filled booking links for flights, hotels, restaurants</li>
+                            <li>Calendar export to Google, Apple, and Outlook</li>
+                            <li>Real-time availability and pricing information</li>
                         </ul>
                     </div>
                     <div class="feature-item">
-                        <div class="icon">💰</div>
-                        <h3>Budget & Style Optimization</h3>
-                        <ul style="font-size: 0.9rem; color: var(--text-on-light-secondary); padding-left: 20px; text-align: left;">
-                            <li>Adapts recommendations to your budget preferences</li>
-                            <li>Customizable travel pace (relaxed, moderate, packed)</li>
-                            <li>Activity duration optimization for your style</li>
+                        <div class="icon">🔄</div>
+                        <h3>Real-Time Optimization</h3>
+                        <ul>
+                            <li>One-click itinerary optimization for better efficiency</li>
+                            <li>Smart alternatives when plans change</li>
+                            <li>Collaborative planning for group trips</li>
                         </ul>
                     </div>
                     <div class="feature-item">
                         <div class="icon">🏢</div>
-                        <h3>Corporate Travel Support</h3>
-                        <ul style="font-size: 0.9rem; color: var(--text-on-light-secondary); padding-left: 20px; text-align: left;">
-                            <li>Team itinerary planning with project codes</li>
-                            <li>Business policy compliance and restrictions</li>
-                            <li>Bleisure integration for work-travel balance</li>
+                        <h3>Enterprise-Ready</h3>
+                        <ul>
+                            <li>Corporate travel policy compliance</li>
+                            <li>Team collaboration and approval workflows</li>
+                            <li>Bleisure trip planning for business travelers</li>
                         </ul>
                     </div>
                 </div>
             </section>
 
+            <section class="content-section-card competitive-edge-section">
+                <h2>Why Swiftinerary Wins</h2>
+                <div style="max-width: 700px; margin: 0 auto;">
+                    <div class="feature-item">
+                        <h4>🎯 AI-First, Not AI-Washed</h4>
+                        <p>Built from the ground up with AI at the core. Our algorithms understand context, constraints, and preferences—not just keyword matching like traditional travel sites.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>⚡ Speed That Matters</h4>
+                        <p>30 seconds from idea to detailed itinerary vs. 8+ hours of manual research. Our users save an entire workday on trip planning.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>🧩 End-to-End Solution</h4>
+                        <p>Unlike fragmented tools, we handle everything: planning, optimization, booking, and collaboration in one seamless experience.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>📊 Real-World Optimization</h4>
+                        <p>Our scheduling engine considers 50+ real-world factors: opening hours, travel time, weather, crowds, and your personal constraints.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>🚀 Scalable Technology</h4>
+                        <p>API-driven architecture ready for enterprise deployment, white-label solutions, and international expansion.</p>
+                    </div>
+                </div>
+            </section>
+
             <section class="content-section-card">
-                <h2>Perfect for Every Type of Trip</h2>
+                <h2>Perfect for Every Traveler</h2>
                 <div style="max-width: 700px; margin: 0 auto;">
                     <p style="text-align:center; margin-bottom: 30px;">From solo adventures to corporate travel, Swiftinerary adapts to your unique needs.</p>
                     <div class="feature-item" style="margin-bottom: 20px; text-align:left;">
                         <h4 style="font-weight: 600; margin-bottom:5px;">🏢 Business Travel & Bleisure</h4>
-                        <p style="font-size: 0.95rem; color: var(--text-on-light-secondary);">Plan efficient business trips with leisure activities. Features team planning, project code tracking, and policy compliance for corporate travelers.</p>
+                        <p style="font-size: 0.95rem; color: var(--text-on-light-secondary);">Efficient business trip planning with leisure integration. Features team collaboration, policy compliance, and expense optimization for corporate travelers.</p>
                     </div>
                     <div class="feature-item" style="margin-bottom: 20px; text-align:left;">
                         <h4 style="font-weight: 600; margin-bottom:5px;">🎒 Solo & Group Adventures</h4>
-                        <p style="font-size: 0.95rem; color: var(--text-on-light-secondary);">Customizable pace and activity types. Budget-conscious options and accessibility considerations included.</p>
+                        <p style="font-size: 0.95rem; color: var(--text-on-light-secondary);">Personalized recommendations based on your travel style, budget, and pace. Group planning with voting and collaborative features.</p>
                     </div>
                     <div class="feature-item" style="margin-bottom: 20px; text-align:left;">
                         <h4 style="font-weight: 600; margin-bottom:5px;">👨‍👩‍👧‍👦 Family Vacations</h4>
-                        <p style="font-size: 0.95rem; color: var(--text-on-light-secondary);">Kid-friendly activities, educational opportunities, and flexible scheduling that works for all ages.</p>
+                        <p style="font-size: 0.95rem; color: var(--text-on-light-secondary);">Kid-friendly activities, educational opportunities, and flexible scheduling that works for all ages and energy levels.</p>
                     </div>
                     <div class="feature-item" style="text-align:left;">
-                        <h4 style="font-weight: 600; margin-bottom:5px;">✈️ Multi-City & Complex Itineraries</h4>
-                        <p style="font-size: 0.95rem; color: var(--text-on-light-secondary);">Handle complex travel with multiple destinations, transit times, and varied accommodation preferences.</p>
+                        <h4 style="font-weight: 600; margin-bottom:5px;">✈️ Complex Multi-City Trips</h4>
+                        <p style="font-size: 0.95rem; color: var(--text-on-light-secondary);">Handle complex itineraries with multiple destinations, transit optimization, and varied accommodation preferences seamlessly.</p>
                     </div>
                 </div>
             </section>
@@ -432,24 +525,24 @@
                     <div class="step-item">
                         <div class="step-number">1</div>
                         <h3>Describe Your Trip</h3>
-                        <p>Tell us about your destination, travel dates, interests, budget, and any fixed commitments like flights or meetings.</p>
+                        <p>Tell us about your destination, dates, interests, budget, and any constraints. Our AI understands natural language—no forms to fill out.</p>
                     </div>
                     <div class="step-item">
                         <div class="step-number">2</div>
-                        <h3>AI Creates Your Itinerary</h3>
-                        <p>Our AI analyzes millions of data points, checks weather forecasts, and optimizes your schedule for the best experience.</p>
+                        <h3>AI Creates Your Perfect Itinerary</h3>
+                        <p>In 30 seconds, get a detailed day-by-day plan optimized for your preferences, weather, and real-world logistics.</p>
                     </div>
                     <div class="step-item">
                         <div class="step-number">3</div>
-                        <h3>Export & Enjoy</h3>
-                        <p>Get your detailed itinerary, export to your calendar, and embark on your perfectly planned adventure!</p>
+                        <h3>Book & Go</h3>
+                        <p>Use pre-filled booking links, export to your calendar, and enjoy your perfectly planned adventure!</p>
                     </div>
                 </div>
             </section>
 
             <section class="content-section-card form-card" id="waitlistForm">
-                <h2 class="form-title">Ready to Transform Your Travel Planning?</h2>
-                <p class="form-description">Try our live demo now or join our mailing list for updates and new features.</p>
+                <h2 class="form-title">Join the Travel Planning Revolution</h2>
+                <p class="form-description">Try our live demo now or join our mailing list for updates on new features and early access opportunities.</p>
                 <form id="waitlistForm" action="https://formsubmit.co/swiftinerary@gmail.com" method="POST" class="cta-form">
                     <input type="hidden" name="_subject" value="Swiftinerary: Mailing List Signup">
                     <input type="hidden" name="_replyto" id="formReplyTo">
@@ -461,7 +554,7 @@
                     <input type="text" id="formTravelStyle" name="travelStyle" placeholder="What type of trips do you usually take? (Optional)">
                     <textarea id="formFeedback" name="feedback" placeholder="Any feedback about the demo or features you'd like to see? (Optional)" rows="4"></textarea>
                     <button type="submit" id="formSubmitButton">
-                        <span class="button-text-span">Join Our Mailing List</span>
+                        <span class="button-text-span">🚀 Join Our Mailing List</span>
                         <span class="spinner-span" style="display: none;"><div class="spinner"></div></span>
                     </button>
                 </form>
@@ -472,11 +565,12 @@
             </section>
 
             <section class="content-section-card about-section">
-                <h2>Built by AI Experts Passionate About Travel</h2>
+                <h2>Built by AI Experts Who Love to Travel</h2>
                 <div style="max-width: 700px; margin: 0 auto; text-align: center;">
-                    <p style="margin-bottom: 20px;">Swiftinerary is founded by Tiberiu Popa (Airbnb, ex-Facebook ML) and Xin Gao (ex-AWS AI, Amazon Alexa, PhD CS), bringing deep expertise in AI and large-scale systems to solve real travel planning challenges.</p>
-                    <a href="https://huggingface.co/spaces/XinGaoNJIT/Swiftinerary" target="_blank" class="schedule-demo-button" style="margin-top: 20px;">
-                        Try Demo Now
+                    <p style="margin-bottom: 20px;">Swiftinerary is founded by <strong>Tiberiu Popa</strong> (Airbnb, ex-Facebook ML) and <strong>Xin Gao</strong> (ex-AWS AI, Amazon Alexa, PhD CS), bringing deep expertise in AI and large-scale systems to solve real travel planning challenges.</p>
+                    <p style="margin-bottom: 30px; font-style: italic; color: var(--text-on-light-secondary);">"We built Swiftinerary because we were tired of spending more time planning trips than enjoying them. AI should make travel planning effortless, not just add more complexity."</p>
+                    <a href="https://swiftinerary.com" target="_blank" class="schedule-demo-button" style="margin-top: 20px;">
+                        🚀 Try Demo Now
                     </a>
                 </div>
             </section>
